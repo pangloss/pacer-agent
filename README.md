@@ -1,6 +1,6 @@
 # Agent plugin for Pacer (pacer-agent)
 
-This plugin adds the concurrency features from [Agent](https://github.com/igrigorik/agent) to [Pacer](https://github.cob/pangloss/pacer).
+This plugin adds the concurrency features from [Agent](https://github.com/igrigorik/agent) to [Pacer](https://github.com/pangloss/pacer).
 
 For more information on Agent, check out this great blog post on
 [Concurrency with Actors, Goroutines &amp; Ruby](http://www.igvita.com/2010/12/02/concurrency-with-actors-goroutines-ruby/).
