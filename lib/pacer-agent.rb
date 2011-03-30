@@ -1,5 +1,16 @@
 require 'agent'
 
+module PacerAgent
+  unless const_defined? :VERSION
+    PATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+    VERSION = File.read(PATH + '/VERSION').chomp
+  end
+
+  def self.reload!
+    load __FILE__
+  end
+end
+
 module Pacer
   module Core
     module Route

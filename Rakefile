@@ -15,14 +15,12 @@ Jeweler::Tasks.new do |gem|
   gem.name = "pacer-agent"
   gem.homepage = "http://github.com/pangloss/pacer-agent"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Use a Go-like concurrency strategy with Pacer}
+  gem.description = %Q{Allows elements from a route to be pushed though a channel and then routed further.}
   gem.email = "darrick@innatesoftware.com"
   gem.authors = ["Darrick Wiebe"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.add_runtime_dependency 'agent', '0.1'
+  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
