@@ -45,17 +45,32 @@ module Agent
 
     def each
       return to_enum unless block_given?
-      while not closed?
+      s = Agent::Selector.new
+      s.case(self, :receive) do
         value = receive
-        return close if self == value
-        yield value
+        if self == value
+          close rescue nil
+          return
+        else
+          yield value
+        end
+      end
+      s.timeout(0.5) { }
+      while not closed?
+        begin
+        s.select
+        rescue Exception, StandardError => e
+          puts e.message
+          pp e.backtrace
+          raise
+        end
       end
     end
 
     def ==(other)
       other.is_a?(Channel) and
         other.name == name and
-          other.type == type and
+          other.instance_variable_get('@type') == @type and
             other.instance_variable_get('@direction') == @direction
     end
   end
