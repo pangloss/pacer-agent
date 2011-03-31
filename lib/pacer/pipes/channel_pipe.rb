@@ -17,6 +17,9 @@ module Pacer
         if timeout
           @selector.timeout(timeout) { raise StopIteration }
         end
+        if @channel.closed?
+          @selector.default { raise StopIteration }
+        end
       end
 
     protected

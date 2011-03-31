@@ -1,6 +1,13 @@
 require 'pacer'
 require 'agent'
 
+# TODO:
+# - callback from channel for when it gets closed?
+# - reading from a closed channel should fail - it blocks
+# - if clone channel a then close one channel, they should both be closed.
+#   - will this all be better on ZMQ?
+# - channel.to_route.limit(1) loses the element after the last element returned
+
 module PacerAgent
   unless const_defined? :VERSION
     PATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -29,7 +36,7 @@ module Pacer
           r.each do |elem|
             c << elem
           end
-          c << c
+          c << c if opts[:auto_close]
         end
         channel
       end
