@@ -9,6 +9,11 @@ module Pacer
           value = channel.receive
           if channel == value
             channel.close rescue nil
+            if channel.receive?
+              channel << value
+            else
+              channel.close rescue nil
+            end
             raise StopIteration
           else
             value
