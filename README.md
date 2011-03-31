@@ -22,7 +22,7 @@ Now we can consume elements from the channel:
 
 Or we can turn the channel back into a route:
 
-    channel.to_route.map { |n| n.to_f }.to_a }.limit 10
+    channel.to_route.map { |n| n.to_f }.limit 10
 
 Let's do that with a few threads:
 
