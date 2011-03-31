@@ -36,7 +36,7 @@ module Pacer
           r.each do |elem|
             c << elem
           end
-          c << c if opts[:auto_close]
+          c << c unless opts[:auto_close] == false
         end
         channel
       end
