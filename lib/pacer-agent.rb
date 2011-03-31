@@ -12,6 +12,10 @@ module PacerAgent
   end
 end
 
+require 'agent/to_route'
+require 'pacer/pipes/channel_pipe'
+require 'pacer/source/channel'
+
 module Pacer
   module Core
     module Route
@@ -33,73 +37,5 @@ module Pacer
       end
     end
   end
-
-  module Pipes
-    class ChannelPipe < AbstractPipe
-      def initialize(channel, timeout = nil)
-        super()
-        @channel = channel.clone
-        @selector = Agent::Selector.new
-        @selector.case(channel, :receive) do
-          value = channel.receive
-          if channel == value
-            channel.close rescue nil
-            raise StopIteration
-          else
-            value
-          end
-        end
-        if timeout
-          @selector.timeout(timeout) { raise StopIteration }
-        end
-      end
-
-    protected
-
-      def processNextStart
-        @selector.select
-      rescue StopIteration
-        raise Pacer::NoSuchElementException
-      end
-    end
-  end
-
-  module Source
-    module Channel
-
-    protected
-
-      def iterator_from_source(src)
-        return super unless src.is_a? Agent::Channel
-        Pacer::Pipes::ChannelPipe.new(src)
-      end
-    end
-  end
 end
 
-module Agent
-  class Channel
-    include Enumerable
-
-    def to_route(opts = {})
-      opts = {
-        :source => self,
-        :element_type => Object,
-        :route_name => "|#{ name }|",
-        :transform => Pacer::Source::Channel
-      }.merge(opts)
-      Pacer::Route.new(opts).route
-    end
-
-    def ==(other)
-      other.is_a?(Channel) and
-        other.name == name and
-          other.instance_variable_get('@type') == @type and
-            other.instance_variable_get('@direction') == @direction
-    end
-
-    def clone
-      Marshal.load(Marshal.dump(self))
-    end
-  end
-end
